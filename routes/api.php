@@ -19,7 +19,10 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 // free routes
+
+
 Route::prefix('free')->group(function () {
+    Route::post('login', [AuthController::class, 'login'])->name('login');
     Route::post('register-user', [AuthController::class, 'registerUser'])->name('registerUser');
 });
 Route::middleware(['auth:api'], function () {

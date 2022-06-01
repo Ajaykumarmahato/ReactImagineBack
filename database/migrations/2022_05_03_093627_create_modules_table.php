@@ -17,7 +17,7 @@ class CreateModulesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('display_name');
-            $table->string('ui_url');
+            $table->string('ui_url')->nullable();
             $table->string('ui_component');
             $table->unsignedBigInteger('parent_module_id')->nullable();
             $table->timestamps();

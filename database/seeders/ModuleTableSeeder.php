@@ -34,10 +34,26 @@ class ModuleTableSeeder extends Seeder
             [
                 "name" => "User",
                 "display_name" => "User",
-                "ui_url" => "/dashboard/User",
+                "ui_url" => null,
                 "ui_component" => "User",
                 "parent_module_id" => null,
                 "is_child_of" => null
+            ],
+            [
+                "name" => "Admin",
+                "display_name" => "Admin",
+                "ui_url" => "/dashboard/admin",
+                "ui_component" => "Admin",
+                "parent_module_id" => null,
+                "is_child_of" => "User"
+            ],
+            [
+                "name" => "Customer",
+                "display_name" => "Customer",
+                "ui_url" => "/dashboard/customer",
+                "ui_component" => "Customer",
+                "parent_module_id" => null,
+                "is_child_of" => "User"
             ],
         ];
 

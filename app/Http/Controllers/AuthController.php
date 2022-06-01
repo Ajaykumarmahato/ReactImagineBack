@@ -23,6 +23,7 @@ class AuthController extends Controller
         }
 
         return DB::transaction(function () use ($UserData, $file) {
+            $UserData['password'] = bcrypt($UserData['password']);
             $newUser = User::create($UserData);
             $newUser->addMedia($file)->toMediaCollection('user');
             return $this->respond($newUser, 'User Registered Successfully');
