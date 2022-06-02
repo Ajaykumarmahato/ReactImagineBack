@@ -20,13 +20,17 @@ class UserTableSeeder extends Seeder
                 "name" => "Dev Admin",
                 "email" => "devadmin@gmail.com",
                 "email_verified_at" => now(),
-                "password" => bcrypt("asdfgh137")
+                "password" => bcrypt("asdfgh137"),
+                "status" => "Enabled",
+                "contact_number" => "984512562885"
             ],
             [
                 "name" => "User",
                 "email" => "user@gmail.com",
                 "email_verified_at" => now(),
-                "password" => bcrypt("asdfgh137")
+                "password" => bcrypt("asdfgh137"),
+                "status" => "Enabled",
+                "contact_number" => "984512562885"
             ]
         ];
 
@@ -34,8 +38,12 @@ class UserTableSeeder extends Seeder
             $createdUser = User::create($user);
 
             if ($createdUser['name'] == "Dev Admin") {
+                $role = Role::where('name', 'Developer Admin')->first();
+                $createdUser->assignRole($role);
             }
             if ($createdUser['name'] == "User") {
+                $role = Role::where('name', 'User')->first();
+                $createdUser->assignRole($role);
             }
         }
     }

@@ -17,7 +17,7 @@ class RoleTableSeeder extends Seeder
     {
         $roles = [
             [
-                "name" => "Dveloper Admin",
+                "name" => "Developer Admin",
                 "guard_name" => "api"
             ],
             [
@@ -34,8 +34,15 @@ class RoleTableSeeder extends Seeder
         foreach ($roles as $role) {
             $role = Role::create($role);
             if ($role['name'] == "Developer Admin" || $role['name'] == "System Admin") {
+                $role->syncPermissions($permissions);
             }
             if ($role['name'] == "User") {
+                foreach ($permissions as $permission) {
+                    $exploded = explode('|', $permission['name']);
+                    if ($exploded[1] == "Category" || ($exploded[1] == "User" && $exploded[0] == "view-my-detail")) {
+                        $permission->assignRole($role);
+                    }
+                }
             }
         }
     }

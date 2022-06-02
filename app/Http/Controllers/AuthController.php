@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\ApiCode;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
@@ -24,9 +27,58 @@ class AuthController extends Controller
 
         return DB::transaction(function () use ($UserData, $file) {
             $UserData['password'] = bcrypt($UserData['password']);
+            $UserData['status'] = "Disabled";
+            $UserData['email_verified_at'] = Carbon::now();
             $newUser = User::create($UserData);
             $newUser->addMedia($file)->toMediaCollection('user');
             return $this->respond($newUser, 'User Registered Successfully');
         });
+    }
+
+
+
+    public function login(Request $request)
+    {
+        $data = $request->all();
+        $commonController = new CommonController();
+
+        $rules = [
+            'email' => ['required', 'email'],
+            'password' => 'required'
+        ];
+        $validation = $commonController->validator($data, $rules);
+
+        if ($validation['response'] == false) {
+            return $this->respondErrorWithMessage($validation['error'], ApiCode::FORBIDDEN, ApiCode::FORBIDDEN);
+        }
+        $credentials = request(['email', 'password']);
+        $credentials['status'] = "Enabled";
+        $user = User::where('email', request('email'))->first();
+
+        if ($user != null) {
+            if (auth()->attempt($credentials)) {
+                $authUser = Auth::user();
+                $tokenResult = auth()->user()->createToken('imagine');
+                return $this->respondWithToken($tokenResult);
+            }
+            return $this->respondErrorWithMessage('User not authenticated', ApiCode::INVALID_CREDENTIALS, 401);
+        } else {
+            return $this->respondErrorWithMessage('Invalid Credentials', ApiCode::FORBIDDEN, 401);
+        }
+    }
+
+    public function respondWithToken($tokenResult)
+    {
+        $role = Auth::user()->roles->pluck('name');
+        return $this->respond([
+            'access_type' => 'bearer',
+            'token' => $tokenResult->accessToken,
+            'expires_in' => Carbon::parse(
+                $tokenResult->token->expires_at
+            )->toDateTimeString(),
+            'roles' => Auth::user()->roles->pluck('name'),
+            'permissions' => Auth::user()->getAllPermissions(),
+
+        ]);
     }
 }

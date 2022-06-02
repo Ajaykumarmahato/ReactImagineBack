@@ -37,7 +37,11 @@ class PermissionTableSeeder extends Seeder
                 [
                     'name' => 'delete|' . $module->name,
                     'guard_name' => 'api',
-                ]
+                ],
+                [
+                    'name' => 'view-my-detail|' . $module->name,
+                    'guard_name' => 'api',
+                ],
             ];
             if ($module['name'] == 'Dashboard') {
                 $permissions = [
@@ -47,6 +51,7 @@ class PermissionTableSeeder extends Seeder
                     ],
                 ];
             }
+
 
             foreach ($permissions as $key => $value) {
                 Permission::create($value);
