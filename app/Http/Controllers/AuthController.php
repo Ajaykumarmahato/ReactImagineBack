@@ -24,13 +24,24 @@ class AuthController extends Controller
         if (array_key_exists('file', $data)) {
             $file = $data['file'];
         }
-
+        $commonController = new CommonController();
+        $rules = [
+            'name' => 'required',
+            'email' => ['required', 'email', 'unique:users'],
+            'password' => 'required'
+        ];
+        $validation = $commonController->validator($UserData, $rules);
+        if ($validation['response'] == false) {
+            return $this->respondErrorWithMessage($validation['error'], ApiCode::VALIDATION_ERROR, 401);
+        }
         return DB::transaction(function () use ($UserData, $file) {
             $UserData['password'] = bcrypt($UserData['password']);
             $UserData['status'] = "Disabled";
             $UserData['email_verified_at'] = Carbon::now();
             $newUser = User::create($UserData);
-            $newUser->addMedia($file)->toMediaCollection('user');
+            if ($file) {
+                $newUser->addMedia($file)->toMediaCollection('user');
+            }
             return $this->respond($newUser, 'User Registered Successfully');
         });
     }
@@ -49,27 +60,25 @@ class AuthController extends Controller
         $validation = $commonController->validator($data, $rules);
 
         if ($validation['response'] == false) {
-            return $this->respondErrorWithMessage($validation['error'], ApiCode::FORBIDDEN, ApiCode::FORBIDDEN);
+            return $this->respondErrorWithMessage($validation['error'], ApiCode::VALIDATION_ERROR, ApiCode::VALIDATION_ERROR);
         }
         $credentials = request(['email', 'password']);
         $credentials['status'] = "Enabled";
         $user = User::where('email', request('email'))->first();
-
         if ($user != null) {
             if (auth()->attempt($credentials)) {
                 $authUser = Auth::user();
                 $tokenResult = auth()->user()->createToken('imagine');
                 return $this->respondWithToken($tokenResult);
             }
-            return $this->respondErrorWithMessage('User not authenticated', ApiCode::INVALID_CREDENTIALS, 401);
+            return $this->respondErrorWithMessage('User not authenticated', ApiCode::FORBIDDEN, ApiCode::FORBIDDEN);
         } else {
-            return $this->respondErrorWithMessage('Invalid Credentials', ApiCode::FORBIDDEN, 401);
+            return $this->respondErrorWithMessage('Invalid Credentials', ApiCode::INVALID_CREDENTIALS, ApiCode::INVALID_CREDENTIALS);
         }
     }
 
     public function respondWithToken($tokenResult)
     {
-        $role = Auth::user()->roles->pluck('name');
         return $this->respond([
             'access_type' => 'bearer',
             'token' => $tokenResult->accessToken,
