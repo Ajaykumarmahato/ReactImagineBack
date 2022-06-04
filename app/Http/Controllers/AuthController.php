@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\ApiCode;
 use App\Models\User;
+use App\Notifications\NotifyEmailVerification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class AuthController extends Controller
 {
@@ -37,11 +39,14 @@ class AuthController extends Controller
         return DB::transaction(function () use ($UserData, $file) {
             $UserData['password'] = bcrypt($UserData['password']);
             $UserData['status'] = "Disabled";
-            $UserData['email_verified_at'] = Carbon::now();
             $newUser = User::create($UserData);
             if ($file) {
                 $newUser->addMedia($file)->toMediaCollection('user');
             }
+            $paramData = [
+                'user' => $newUser
+            ];
+            Notification::route('mail', $newUser['email'])->notify(new NotifyEmailVerification($paramData));
             return $this->respond($newUser, 'User Registered Successfully');
         });
     }
@@ -89,5 +94,18 @@ class AuthController extends Controller
             'permissions' => Auth::user()->getAllPermissions(),
 
         ]);
+    }
+
+
+    public function verifyEmail($email, $id)
+    {
+        $decodedEmail = base64_decode($email);
+        $decodedId = base64_decode($id);
+
+        $user = USer::where('id', $decodedId)->where('email', $decodedEmail)->update([
+            'email_verified_at' => Carbon::now(),
+            'status' => 'Enabled'
+        ]);
+        return redirect()->to(env('FRONTEND_URL', 'http://localhost:3000'));
     }
 }
