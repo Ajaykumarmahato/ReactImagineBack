@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ModuleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,5 +24,10 @@ Route::prefix('free')->group(function () {
     Route::post('register-user', [AuthController::class, 'registerUser'])->name('registerUser');
     Route::get('verify-email/{email}/{id}', [AuthController::class, 'verifyEmail'])->name('verifyEmail');
 });
+
 Route::middleware(['auth:api'], function () {
+
+    Route::group(['prefix' => 'modules', 'as' => 'modules.'], function () {
+        Route::get('', [ModuleController::class, 'all'])->name('all');
+    });
 });

@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
-interface ModuleRepositoryInterface {
+interface ModuleRepositoryInterface
+{
 
+    public function all();
 }
