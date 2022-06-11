@@ -8,8 +8,14 @@ class ModuleRepository implements ModuleRepositoryInterface
 {
 
 
-    public function all()
+    public function get()
     {
-        return Module::all();
+        $modules = Module::where('parent_module_id', null)->get();
+        if (count($modules) > 0) {
+            foreach ($modules as $module) {
+                $module['sub_modules'] = Module::where('parent_module_id', $module['id'])->get();
+            }
+        }
+        return $modules;
     }
 }

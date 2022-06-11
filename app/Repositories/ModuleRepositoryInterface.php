@@ -5,5 +5,5 @@ namespace App\Repositories;
 interface ModuleRepositoryInterface
 {
 
-    public function all();
+    public function get();
 }

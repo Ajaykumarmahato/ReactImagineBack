@@ -16,8 +16,8 @@ class ModuleController extends Controller
     }
 
 
-    public function all()
+    public function get()
     {
-        return $this->respond($this->module->all());
+        return $this->respond($this->module->get());
     }
 }

@@ -25,9 +25,11 @@ Route::prefix('free')->group(function () {
     Route::get('verify-email/{email}/{id}', [AuthController::class, 'verifyEmail'])->name('verifyEmail');
 });
 
-Route::middleware(['auth:api'], function () {
 
-    Route::group(['prefix' => 'modules', 'as' => 'modules.'], function () {
-        Route::get('', [ModuleController::class, 'all'])->name('all');
+Route::middleware(['auth:api'])->group(function () {
+    Route::prefix('auth')->group(function () {
+        Route::prefix('modules')->group(function () {
+            Route::get('', [ModuleController::class, 'get'])->name('get');
+        });
     });
 });
