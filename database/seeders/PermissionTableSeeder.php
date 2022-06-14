@@ -19,7 +19,11 @@ class PermissionTableSeeder extends Seeder
         foreach ($modules as $module) {
             $permissions = [
                 [
-                    'name' => 'view|' . $module->name,
+                    'name' => 'details|' . $module->name,
+                    'guard_name' => 'api',
+                ],
+                [
+                    'name' => 'show-module|' . $module->name,
                     'guard_name' => 'api',
                 ],
                 [
@@ -46,7 +50,7 @@ class PermissionTableSeeder extends Seeder
             if ($module['name'] == 'Dashboard') {
                 $permissions = [
                     [
-                        'name' => 'view|' . $module->name,
+                        'name' => 'show-module|' . $module->name,
                         'guard_name' => 'api',
                     ],
                 ];
