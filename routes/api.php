@@ -23,13 +23,14 @@ Route::prefix('free')->group(function () {
     Route::post('login', [AuthController::class, 'login'])->name('login');
     Route::post('register-user', [AuthController::class, 'registerUser'])->name('registerUser');
     Route::get('verify-email/{email}/{id}', [AuthController::class, 'verifyEmail'])->name('verifyEmail');
+
+    Route::prefix('modules')->group(function () {
+        Route::get('', [ModuleController::class, 'get'])->name('get');
+    });
 });
 
 
 Route::middleware(['auth:api'])->group(function () {
     Route::prefix('auth')->group(function () {
-        Route::prefix('modules')->group(function () {
-            Route::get('', [ModuleController::class, 'get'])->name('get');
-        });
     });
 });

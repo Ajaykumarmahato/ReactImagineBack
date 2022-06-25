@@ -27,6 +27,10 @@ class PermissionTableSeeder extends Seeder
                     'guard_name' => 'api',
                 ],
                 [
+                    'name' => 'view|' . $module->name,
+                    'guard_name' => 'api',
+                ],
+                [
                     'name' => 'view-all|' . $module->name,
                     'guard_name' => 'api',
                 ],

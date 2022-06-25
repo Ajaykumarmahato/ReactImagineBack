@@ -26,7 +26,7 @@ class ModuleTableSeeder extends Seeder
             [
                 "name" => "Category",
                 "display_name" => "Category",
-                "ui_url" => "/dashboard/category",
+                "ui_url" => "/category",
                 "ui_component" => "Category",
                 "parent_module_id" => null,
                 "is_child_of" => null
@@ -42,7 +42,7 @@ class ModuleTableSeeder extends Seeder
             [
                 "name" => "Admin",
                 "display_name" => "Admin",
-                "ui_url" => "/dashboard/admin",
+                "ui_url" => "/admin",
                 "ui_component" => "Admin",
                 "parent_module_id" => null,
                 "is_child_of" => "User"
@@ -50,7 +50,7 @@ class ModuleTableSeeder extends Seeder
             [
                 "name" => "Customer",
                 "display_name" => "Customer",
-                "ui_url" => "/dashboard/customer",
+                "ui_url" => "/customer",
                 "ui_component" => "Customer",
                 "parent_module_id" => null,
                 "is_child_of" => "User"
@@ -59,7 +59,7 @@ class ModuleTableSeeder extends Seeder
 
         foreach ($modules as $module) {
             if ($module['is_child_of'] != null) {
-                $parentModule = Module::where('name', $module['name'])->first();
+                $parentModule = Module::where('name', $module['is_child_of'])->first();
                 if ($parentModule) {
                     $module['parent_module_id'] = $parentModule->id;
                 }
