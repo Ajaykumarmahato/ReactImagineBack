@@ -34,4 +34,9 @@ class CategoryController extends Controller
         }
         return $this->respond($this->category->store($request->all()), 'Category Added Successfully.');
     }
+
+    public function delete($id)
+    {
+        return $this->respond($this->category->delete($id), 'Category Deleted Successfully.');
+    }
 }

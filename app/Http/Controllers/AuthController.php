@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
+use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
@@ -37,6 +38,7 @@ class AuthController extends Controller
             $UserData['password'] = bcrypt($UserData['password']);
             $UserData['status'] = "Disabled";
             $newUser = User::create($UserData);
+            $newUser->assignRole(Role::where('name', 'User')->first());
             if ($file) {
                 $newUser->addMedia($file)->toMediaCollection('user');
             }
@@ -75,7 +77,7 @@ class AuthController extends Controller
             }
             return $this->respondErrorWithMessage('User not authenticated', ApiCode::FORBIDDEN, ApiCode::FORBIDDEN);
         } else {
-            return $this->respondErrorWithMessage('Invalid Credentials', ApiCode::INVALID_CREDENTIALS, ApiCode::INVALID_CREDENTIALS);
+            return $this->respondErrorWithMessage('Invalid Credentials', ApiCode::FORBIDDEN, ApiCode::FORBIDDEN);
         }
     }
 

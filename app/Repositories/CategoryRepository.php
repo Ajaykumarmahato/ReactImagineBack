@@ -28,4 +28,9 @@ class CategoryRepository implements CategoryRepositoryInterface
             }
         });
     }
+
+    public function delete($id)
+    {
+        return Category::where('id', $id)->delete();
+    }
 }

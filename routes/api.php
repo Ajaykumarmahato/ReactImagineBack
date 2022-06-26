@@ -36,6 +36,7 @@ Route::middleware(['auth:api'])->group(function () {
         Route::prefix('categories')->group(function () {
             Route::get('', [CategoryController::class, 'index'])->name('index');
             Route::post('', [CategoryController::class, 'store'])->name('store');
+            Route::get('delete/{id}', [CategoryController::class, 'delete'])->name('delete');
         });
     });
 });
