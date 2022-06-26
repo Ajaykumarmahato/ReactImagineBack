@@ -28,4 +28,17 @@ if (!function_exists('snake_case')) {
     {
         return Str::snake($value, $delimiter);
     }
+    if (!function_exists('jsonDecode')) {
+
+        function jsonDecode($key, $data)
+        {
+            if (array_key_exists($key, $data)) {
+                $jsonData = json_decode($data[$key]);
+                $finalData = snake_keys($jsonData);
+            } else {
+                $finalData = null;
+            }
+            return $finalData;
+        }
+    }
 }

@@ -16,11 +16,8 @@ class AuthController extends Controller
     public function registerUser(Request $request)
     {
         $data = $request->all();
-        $UserData = null;
-        if (array_key_exists('user', $data)) {
-            $jsonData = json_decode($data['user']);
-            $UserData = snake_keys($jsonData);
-        }
+
+        $UserData = jsonDecode('user', $data);
 
         $file = null;
         if (array_key_exists('file', $data)) {
