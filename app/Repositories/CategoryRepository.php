@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CategoryRepository implements CategoryRepositoryInterface
@@ -11,7 +12,7 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     public function index()
     {
-        return Category::with('media')->get();
+        return Category::where('user_id',Auth::id())->with('media')->get();
     }
     public function store($data)
     {
@@ -22,6 +23,7 @@ class CategoryRepository implements CategoryRepositoryInterface
         }
 
         return DB::transaction(function () use ($categoryData, $file) {
+            $categoryData['user_id']=Auth::id();
             $category = Category::create($categoryData);
             if ($file) {
                 $category->addMedia($file)->toMediaCollection('category');
