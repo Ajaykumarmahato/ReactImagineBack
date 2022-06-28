@@ -55,6 +55,14 @@ class ModuleTableSeeder extends Seeder
                 "parent_module_id" => null,
                 "is_child_of" => "User"
             ],
+            [
+                "name" => "Role",
+                "display_name" => "Role",
+                "ui_url" => "/role",
+                "ui_component" => "Role",
+                "parent_module_id" => null,
+                "is_child_of" => null
+            ],
         ];
 
         foreach ($modules as $module) {
