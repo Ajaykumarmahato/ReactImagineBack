@@ -3,6 +3,8 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RoleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +39,13 @@ Route::middleware(['auth:api'])->group(function () {
             Route::get('', [CategoryController::class, 'index'])->name('index');
             Route::post('', [CategoryController::class, 'store'])->name('store');
             Route::get('delete/{id}', [CategoryController::class, 'delete'])->name('delete');
+        });
+        Route::prefix('roles')->group(function () {
+            Route::get('', [RoleController::class, 'index'])->name('index');
+            Route::post('', [RoleController::class, 'store'])->name('store');
+        });
+        Route::prefix('permissions')->group(function () {
+            Route::get('', [PermissionController::class, 'index'])->name('index');
         });
     });
 });
