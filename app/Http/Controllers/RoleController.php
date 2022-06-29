@@ -34,4 +34,15 @@ class RoleController extends Controller
             return $this->respond(null, 'Role Added Successfully.');
         }
     }
+    public function editRolePermissions(Request $request)
+    {
+        $data = $request->all();
+        $role = Role::where('id', $data['roleId'])->first();
+        if ($role == null) {
+            return $this->respondErrorWithMessage('Role Not found', ApiCode::FORBIDDEN, ApiCode::FORBIDDEN);
+        } else {
+            $role->syncPermissions($data['permissions']);
+            return $this->respond(null, 'Permissions Updated Successfully.');
+        }
+    }
 }

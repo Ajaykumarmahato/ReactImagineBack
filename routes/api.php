@@ -35,7 +35,7 @@ Route::prefix('free')->group(function () {
 
 Route::middleware(['auth:api'])->group(function () {
     Route::prefix('auth')->group(function () {
-        Route::get('logout', [AuthController::class,'logout'])->name('logout');
+        Route::get('logout', [AuthController::class, 'logout'])->name('logout');
         Route::prefix('categories')->group(function () {
             Route::get('', [CategoryController::class, 'index'])->name('index');
             Route::post('', [CategoryController::class, 'store'])->name('store');
@@ -44,6 +44,7 @@ Route::middleware(['auth:api'])->group(function () {
         Route::prefix('roles')->group(function () {
             Route::get('', [RoleController::class, 'index'])->name('index');
             Route::post('', [RoleController::class, 'store'])->name('store');
+            Route::post('edit-role-permissions', [RoleController::class, 'editRolePermissions'])->name('editRolePermissions');
         });
         Route::prefix('permissions')->group(function () {
             Route::get('', [PermissionController::class, 'index'])->name('index');

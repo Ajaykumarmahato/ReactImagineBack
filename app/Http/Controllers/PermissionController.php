@@ -15,13 +15,13 @@ class PermissionController extends Controller
     }
     public function moduleRolePermission($roleId)
     {
-        $role=Role::where('id',$roleId)->with('permissions')->first();
+        $role = Role::where('id', $roleId)->with('permissions')->first();
         $finalPermissions = [];
-        $rolespermissionIds=[];
-        if($role){
-            if(count($role['permissions'])>0){
-                foreach($role['permissions'] as $rp){
-                    array_push($rolespermissionIds,$rp['id']);
+        $rolespermissionIds = [];
+        if ($role) {
+            if (count($role['permissions']) > 0) {
+                foreach ($role['permissions'] as $rp) {
+                    array_push($rolespermissionIds, $rp['id']);
                 }
             }
             $permissions = Permission::all();
@@ -36,20 +36,19 @@ class PermissionController extends Controller
                 $finalModu['moduleName'] = $fm;
                 $finalModu['action'] = [];
                 foreach ($permissions as $permission) {
-                    $hasPermission=false;
-                    if(in_array($permission->id,$rolespermissionIds)){
-                        $hasPermission=true;
+                    $hasPermission = false;
+                    if (in_array($permission->id, $rolespermissionIds)) {
+                        $hasPermission = true;
                     }
                     $permissionName = explode('|', $permission->name);
                     if ($permissionName[1] == $fm) {
-                        array_push($finalModu['action'], ['id' => $permission->id, 'name' => $permissionName[0],'hasPermission'=>$hasPermission]);
+                        array_push($finalModu['action'], ['id' => $permission->id, 'name' => $permissionName[0], 'hasPermission' => $hasPermission]);
                     }
                 }
                 array_push($finalPermissions, $finalModu);
             }
         }
         return $this->respond(collect($finalPermissions));
-       
     }
 
     public function getModulePermisson()
