@@ -46,6 +46,8 @@ Route::middleware(['auth:api'])->group(function () {
         });
         Route::prefix('permissions')->group(function () {
             Route::get('', [PermissionController::class, 'index'])->name('index');
+            Route::get('module-permissions', [PermissionController::class, 'getModulePermisson'])->name('getModulePermisson');
+            Route::get('module-role-permission/{roleId}', [PermissionController::class, 'moduleRolePermission'])->name('moduleRolePermission');
         });
     });
 });
