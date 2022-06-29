@@ -107,4 +107,13 @@ class AuthController extends Controller
         ]);
         return redirect()->to(env('FRONTEND_URL', 'http://localhost:3000'));
     }
+
+
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+        $token = $request->user()->token();
+        $token->revoke();
+        return $this->respondWithMessage("You have been successfully logged out!");
+    }
 }
