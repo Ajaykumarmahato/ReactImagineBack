@@ -101,7 +101,7 @@ class AuthController extends Controller
         $decodedEmail = base64_decode($email);
         $decodedId = base64_decode($id);
 
-        $user = USer::where('id', $decodedId)->where('email', $decodedEmail)->update([
+        $user = User::where('id', $decodedId)->where('email', $decodedEmail)->update([
             'email_verified_at' => Carbon::now(),
             'status' => 'Enabled'
         ]);
