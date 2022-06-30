@@ -45,6 +45,7 @@ Route::middleware(['auth:api'])->group(function () {
             Route::get('', [RoleController::class, 'index'])->name('index');
             Route::post('', [RoleController::class, 'store'])->name('store');
             Route::post('edit-role-permissions', [RoleController::class, 'editRolePermissions'])->name('editRolePermissions');
+            Route::get('delete/{roleId}', [RoleController::class, 'delete'])->name('delete');
         });
         Route::prefix('permissions')->group(function () {
             Route::get('', [PermissionController::class, 'index'])->name('index');

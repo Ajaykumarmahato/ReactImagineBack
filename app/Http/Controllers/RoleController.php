@@ -45,4 +45,16 @@ class RoleController extends Controller
             return $this->respond(null, 'Permissions Updated Successfully.');
         }
     }
+
+
+    public function delete($roleId)
+    {
+        $userHasRole = DB::table('model_has_roles')->where('role_id', $roleId)->get();
+        if (count($userHasRole) > 0) {
+            return $this->respondErrorWithMessage('Role Cannot Be Deleted.', ApiCode::FORBIDDEN, ApiCode::FORBIDDEN);
+        } else {
+            Role::where('id', $roleId)->delete();
+            return $this->respond(null, 'Role Deleted Successfully.');
+        }
+    }
 }
