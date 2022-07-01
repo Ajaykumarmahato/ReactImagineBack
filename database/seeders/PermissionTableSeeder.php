@@ -50,6 +50,10 @@ class PermissionTableSeeder extends Seeder
                     'name' => 'view-my-detail|' . $module->name,
                     'guard_name' => 'api',
                 ],
+                [
+                    'name' => 'search|' . $module->name,
+                    'guard_name' => 'api',
+                ],
             ];
             if ($module['name'] == 'Dashboard') {
                 $permissions = [

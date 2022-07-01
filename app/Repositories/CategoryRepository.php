@@ -14,6 +14,10 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         return Category::where('user_id',Auth::id())->with('media')->get();
     }
+    public function search($data)
+    {
+        return Category::where('user_id',Auth::id())->where('name','like', '%' . $data['name'] . '%')->with('media')->get();
+    }
     public function store($data)
     {
         $categoryData = jsonDecode('category', $data);

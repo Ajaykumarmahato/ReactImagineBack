@@ -40,6 +40,7 @@ Route::middleware(['auth:api'])->group(function () {
             Route::get('', [CategoryController::class, 'index'])->name('index');
             Route::post('', [CategoryController::class, 'store'])->name('store');
             Route::get('delete/{id}', [CategoryController::class, 'delete'])->name('delete');
+            Route::post('search', [CategoryController::class, 'search'])->name('search');
         });
         Route::prefix('roles')->group(function () {
             Route::get('', [RoleController::class, 'index'])->name('index');
