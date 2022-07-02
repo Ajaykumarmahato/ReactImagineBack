@@ -49,8 +49,9 @@ class RoleController extends Controller
     }
 
 
-    public function search($data)
+    public function search(Request $request)
     {
+        $data = $request->all();
         $roles = Role::where('name', 'like', '%' . $data['name'] . '%')->get();
 
         return $this->respond($roles);
