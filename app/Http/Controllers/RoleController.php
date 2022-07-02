@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\ApiCode;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
@@ -44,6 +46,14 @@ class RoleController extends Controller
             $role->syncPermissions($data['permissions']);
             return $this->respond(null, 'Permissions Updated Successfully.');
         }
+    }
+
+
+    public function search($data)
+    {
+        $roles = Role::where('name', 'like', '%' . $data['name'] . '%')->get();
+
+        return $this->respond($roles);
     }
 
 
