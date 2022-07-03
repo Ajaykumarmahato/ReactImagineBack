@@ -15,9 +15,9 @@ class CategoryController extends Controller
         $this->category = $category;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return $this->respond($this->category->index());
+        return $this->respond($this->category->index($request->all()));
     }
 
     public function store(Request $request)

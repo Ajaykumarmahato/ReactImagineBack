@@ -37,8 +37,8 @@ Route::middleware(['auth:api'])->group(function () {
     Route::prefix('auth')->group(function () {
         Route::get('logout', [AuthController::class, 'logout'])->name('logout');
         Route::prefix('categories')->group(function () {
-            Route::get('', [CategoryController::class, 'index'])->name('index');
-            Route::post('', [CategoryController::class, 'store'])->name('store');
+            Route::post('', [CategoryController::class, 'index'])->name('index');
+            Route::post('store', [CategoryController::class, 'store'])->name('store');
             Route::get('delete/{id}', [CategoryController::class, 'delete'])->name('delete');
             Route::post('search', [CategoryController::class, 'search'])->name('search');
         });
