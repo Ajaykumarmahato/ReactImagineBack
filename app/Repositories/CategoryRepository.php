@@ -11,16 +11,11 @@ class CategoryRepository implements CategoryRepositoryInterface
 {
 
 
-    public function index($data)
+    public function index()
     {
-        $limit = $data['itemPerPage'];
-        $offSet = $data['itemPerPage'] * ($data['currentPage'] - 1);
-        $categoryCount = Category::where('user_id', Auth::id())->with('media')->count();
-        $categories = Category::where('user_id', Auth::id())->with('media')->limit($limit)->offset($offSet)->get();
-        return [
-            'total' => $categoryCount,
-            'categories' => $categories
-        ];
+       
+        return Category::where('user_id', Auth::id())->with('media')->get();
+        
     }
 
 
