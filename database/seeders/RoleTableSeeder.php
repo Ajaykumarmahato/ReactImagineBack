@@ -39,7 +39,7 @@ class RoleTableSeeder extends Seeder
             if ($role['name'] == "User") {
                 foreach ($permissions as $permission) {
                     $exploded = explode('|', $permission['name']);
-                    if ($exploded[1] == "Category" || ($exploded[1] == "User" && $exploded[0] == "view-my-detail")) {
+                    if ($exploded[1] == "Category" || ($exploded[1] == "User" && $exploded[0] == "view-my-detail") || $exploded[1] == "Nominal Account") {
                         $permission->assignRole($role);
                     }
                 }

@@ -63,6 +63,14 @@ class ModuleTableSeeder extends Seeder
                 "parent_module_id" => null,
                 "is_child_of" => null
             ],
+            [
+                "name" => "Nominal Account",
+                "display_name" => "Nominal Account",
+                "ui_url" => "/nominal-account",
+                "ui_component" => "NominalAccount",
+                "parent_module_id" => null,
+                "is_child_of" => null
+            ],
         ];
 
         foreach ($modules as $module) {

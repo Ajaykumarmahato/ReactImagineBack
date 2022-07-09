@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\NominalAccountController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use Illuminate\Http\Request;
@@ -53,6 +54,9 @@ Route::middleware(['auth:api'])->group(function () {
             Route::get('', [PermissionController::class, 'index'])->name('index');
             Route::get('module-permissions', [PermissionController::class, 'getModulePermisson'])->name('getModulePermisson');
             Route::get('module-role-permission/{roleId}', [PermissionController::class, 'moduleRolePermission'])->name('moduleRolePermission');
+        });
+        Route::prefix('nominal-accounts')->group(function () {
+            Route::post('', [NominalAccountController::class, 'store'])->name('store');
         });
     });
 });
