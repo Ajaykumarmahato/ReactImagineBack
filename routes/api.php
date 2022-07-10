@@ -56,7 +56,8 @@ Route::middleware(['auth:api'])->group(function () {
             Route::get('module-role-permission/{roleId}', [PermissionController::class, 'moduleRolePermission'])->name('moduleRolePermission');
         });
         Route::prefix('nominal-accounts')->group(function () {
-            Route::post('', [NominalAccountController::class, 'store'])->name('store');
+            Route::post('', [NominalAccountController::class, 'index'])->name('index');
+            Route::post('store', [NominalAccountController::class, 'store'])->name('store');
         });
     });
 });

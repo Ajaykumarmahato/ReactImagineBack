@@ -18,4 +18,9 @@ class NominalAccountController extends Controller
     {
         return $this->respond($this->nominalaccount->store($request->all()), 'Data Added Successfully.');
     }
+
+    public function index(Request $request)
+    {
+        return $this->respond($this->nominalaccount->index($request->all()));
+    }
 }
