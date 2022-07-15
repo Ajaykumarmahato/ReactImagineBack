@@ -12,15 +12,19 @@ class NominalAccountRepository implements NominalAccountRepositoryInterface
     public function store($data)
     {
         return DB::transaction(function () use ($data) {
-            $data['is_income'] = $data['isIncome'];
-            $data['user_id'] = Auth::id();
-            $data['category_id'] = $data['categoryId'];
-            NominalAccount::create($data);
+            $jsonData = jsonDecode('data', $data);
+            $jsonData['user_id'] = Auth::id();
+            $nominalAccount=NominalAccount::create($jsonData);
+            if(array_key_exists('files',$data)){
+                foreach($data['files'] as $file){
+                    $nominalAccount->addMedia($file)->toMediaCollection('Nominal Account');
+                }
+            }
         });
     }
 
     public function index($data)
     {
-        return NominalAccount::where('user_id', Auth::id())->where('is_income', $data['isIncome'])->with('category')->get();
+        return NominalAccount::where('user_id', Auth::id())->where('is_income', $data['isIncome'])->with('category','media')->get();
     }
 }
