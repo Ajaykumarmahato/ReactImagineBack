@@ -11,17 +11,22 @@ class CategoryRepository implements CategoryRepositoryInterface
 {
 
 
-    public function index()
+    public function index($data)
     {
+
+        $pageNumber=$data['pageNumber'];
+        $offset=($pageNumber-1)* itemsPerPage();
        
-        return Category::where('user_id', Auth::id())->with('media')->get();
+        return Category::where('user_id', Auth::id())->with('media')->limit(itemsPerPage())->offset($offset)->get();
         
     }
 
 
     public function search($data)
     {
-        return Category::where('user_id', Auth::id())->where('name', 'like', '%' . $data['name'] . '%')->with('media')->get();
+        $pageNumber=$data['pageNumber'];
+        $offset=($pageNumber-1)* itemsPerPage();
+        return Category::where('user_id', Auth::id())->where('name', 'like', '%' . $data['name'] . '%')->with('media')->limit(itemsPerPage())->offset($offset)->get();
     }
     public function store($data)
     {

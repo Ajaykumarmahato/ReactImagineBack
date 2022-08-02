@@ -41,4 +41,11 @@ if (!function_exists('snake_case')) {
             return $finalData;
         }
     }
+    if (!function_exists('itemsPerPage')) {
+
+        function itemsPerPage()
+        {
+            return 1;
+        }
+    }
 }
