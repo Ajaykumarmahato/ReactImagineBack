@@ -14,19 +14,33 @@ class CategoryRepository implements CategoryRepositoryInterface
     public function index($data)
     {
 
-        $pageNumber=$data['pageNumber'];
-        $offset=($pageNumber-1)* itemsPerPage();
-       
-        return Category::where('user_id', Auth::id())->with('media')->limit(itemsPerPage())->offset($offset)->get();
-        
+        $pageNumber = $data['pageNumber'];
+        $offset = ($pageNumber - 1) * itemsPerPage();
+
+        $categories = Category::latest()->where('user_id', Auth::id())->with('media')->limit(itemsPerPage())->offset($offset)->get();
+        return [
+            'categories' => $categories,
+            'total' => Category::where('user_id', Auth::id())->count()
+
+        ];
+    }
+    public function getAllCategories()
+    {
+
+        return Category::where('user_id', Auth::id())->with('media')->get();
     }
 
 
     public function search($data)
     {
-        $pageNumber=$data['pageNumber'];
-        $offset=($pageNumber-1)* itemsPerPage();
-        return Category::where('user_id', Auth::id())->where('name', 'like', '%' . $data['name'] . '%')->with('media')->limit(itemsPerPage())->offset($offset)->get();
+        $pageNumber = $data['pageNumber'];
+        $offset = ($pageNumber - 1) * itemsPerPage();
+        $categories = Category::where('user_id', Auth::id())->where('name', 'like', '%' . $data['name'] . '%')->with('media')->limit(itemsPerPage())->offset($offset)->get();
+        return [
+            'categories' => $categories,
+            'total' => Category::where('user_id', Auth::id())->where('name', 'like', '%' . $data['name'] . '%')->count()
+
+        ];
     }
     public function store($data)
     {

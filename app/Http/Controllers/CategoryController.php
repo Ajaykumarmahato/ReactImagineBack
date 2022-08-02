@@ -20,6 +20,11 @@ class CategoryController extends Controller
         return $this->respond($this->category->index($request->all()));
     }
 
+    public function getAllCategories()
+    {
+        return $this->respond($this->category->getAllCategories());
+    }
+
     public function store(Request $request)
     {
 

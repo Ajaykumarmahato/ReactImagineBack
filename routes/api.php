@@ -42,6 +42,7 @@ Route::middleware(['auth:api'])->group(function () {
             Route::post('store', [CategoryController::class, 'store'])->name('store');
             Route::get('delete/{id}', [CategoryController::class, 'delete'])->name('delete');
             Route::post('search', [CategoryController::class, 'search'])->name('search');
+            Route::get('get-all-categories', [CategoryController::class, 'getAllCategories'])->name('getAllCategories');
         });
         Route::prefix('roles')->group(function () {
             Route::get('', [RoleController::class, 'index'])->name('index');

@@ -8,4 +8,5 @@ interface CategoryRepositoryInterface
     public function search($data);
     public function store($data);
     public function delete($id);
+    public function getAllCategories();
 }
