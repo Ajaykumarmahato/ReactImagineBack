@@ -12,11 +12,16 @@ use Spatie\Permission\Models\Role;
 class RoleController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $roles = Role::with('permissions')->get();
+        $data=$request->all();
+        $offset=($data['pageNumber']-1)*itemsPerPage();
+        $roles = Role::with('permissions')->limit(itemsPerPage())->offset($offset)->get();
 
-        return $this->respond($roles);
+       return $this->respond([
+           'roles'=>$roles,
+           'total'=>Role::with('permissions')->count()
+       ]);
     }
 
     public function store(Request $request)
@@ -52,9 +57,13 @@ class RoleController extends Controller
     public function search(Request $request)
     {
         $data = $request->all();
-        $roles = Role::where('name', 'like', '%' . $data['name'] . '%')->get();
+        $offset=($data['pageNumber']-1)*itemsPerPage();
+        $roles = Role::where('name', 'like', '%' . $data['name'] . '%')->limit(itemsPerPage())->offset($offset)->get();
 
-        return $this->respond($roles);
+        return $this->respond([
+            'roles'=>$roles,
+            'total'=>Role::where('name', 'like', '%' . $data['name'] . '%')->count()
+        ]);
     }
 
 

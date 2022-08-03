@@ -45,8 +45,8 @@ Route::middleware(['auth:api'])->group(function () {
             Route::get('get-all-categories', [CategoryController::class, 'getAllCategories'])->name('getAllCategories');
         });
         Route::prefix('roles')->group(function () {
-            Route::get('', [RoleController::class, 'index'])->name('index');
-            Route::post('', [RoleController::class, 'store'])->name('store');
+            Route::post('', [RoleController::class, 'index'])->name('index');
+            Route::post('store', [RoleController::class, 'store'])->name('store');
             Route::post('edit-role-permissions', [RoleController::class, 'editRolePermissions'])->name('editRolePermissions');
             Route::get('delete/{roleId}', [RoleController::class, 'delete'])->name('delete');
             Route::post('search', [RoleController::class, 'search'])->name('search');
